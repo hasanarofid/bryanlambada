@@ -1,17 +1,20 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use Illuminate\Support\Facades\View;
+use App\User;
+use App\Menu;
+use App\Page;
+use App\Panel;
+use App\Widget;
+use App\WidgetGrid;
+use App\WidgetGridField;
+use App\Departement;
+use App\Company;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 
 Route::get('/', 'HomeController@index');
 Route::get('/login', 'DashboardBaruController@login');
@@ -32,14 +35,49 @@ Route::post('/ambildata2', 'SystemController@ambildata2');
 Route::post('/ordertable', 'SystemController@ordertable');
 Route::post('/hapusdepartemen', 'SystemController@hapusdepartemen');
 Route::post('/editdepartemen', 'SystemController@editdepartemen');
-// Route::get('/2', 'PagesController@notfound');
-// Route::get('/20{slug}', 'SystemController@index');
-// Route::get('/50{slug}', 'CustomController@index');
-// Route::get('/{slug}', 'HomeController@page');
-// Route::get('/custom/tag/{slug}', 'CustomController@index');
+// Route::get('/{slug}', array('as' => 'home.home', 'uses' => 'HomeController@home'));
 Route::get('/{slug}', 'HomeController@home');
-Route::get('/{slug}', 'CustomController@index');
-// Route::get('/{slug}', 'SystemController@index');
+// Route::get('{slug}', function($slug) {
+//    // return 'User '.$slug;
+//       if(!Session::get('login')){
+//           return view('pages.login');
+//       }
+//     $menu = App\Menu::where('noid',$slug)->first();
+//     $page = App\Page::where('noid',$menu->linkidpage)->first();
+//     if ($page->idtypepage == 9) {
+//       //custom
+//       return redirect(route('custom'));
+//     }else if ($page->idtypepage == 1) {
+//       //Halaman System
+//       return redirect(route('system'));
+//     }else if ($page->idtypepage == 2) {
+//       //Dashboard
+//       return redirect(route('dashboard'));
+//     }else if ($page->idtypepage == 3) {
+//       // Halaman Data Master (Tabel Biasa)
+//       return redirect(route('MasterTabelController'));
+//     }else if ($page->idtypepage == 4) {
+//       // Halaman Data Master (Tabel Biasa)
+//       return redirect(route('MasterTreelistController'));
+//     }else if ($page->idtypepage == 5) {
+//       return redirect(route('TransaksiMasterDetailController'));
+//     }else if ($page->idtypepage == 6) {
+//         return redirect(route('TransaksiMasterDetail6Controller'));
+//     }else if ($page->idtypepage == 7) {
+//           return redirect(route('ReportingStandardController'));
+//     }else if ($page->idtypepage == 8) {
+//             return redirect(route('ReportingNonStandardController'));
+//     }
+//     return abort(404);
+// });
+// Route::get('/{slug}', 'CustomController@index')->name('custom');
+// Route::get('/{slug}', 'SystemController@index')->name('system');
+// Route::patch('/{slug}',[
+//   'as' => 'custom.index',
+//   'uses' => 'CustomController@index'
+// ]);
+// Route::get('/{slug}', 'HomeController@home')->name('home');
+
 // Route::get('/{slug}', 'DashboardController@index');
 // Route::get('/{slug}', 'MasterTabelController@index');
 // Route::get('/{slug}', 'MasterTreelistController@index');

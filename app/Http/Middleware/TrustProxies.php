@@ -12,12 +12,17 @@ class TrustProxies extends Middleware
      *
      * @var array|string
      */
-    protected $proxies;
+    // protected $proxies;
+    protected $proxies = [
+        'http://ux.lambada.id/',
+        '192.168.1.2',
+    ];
 
     /**
      * The headers that should be used to detect proxies.
      *
      * @var int
      */
-    protected $headers = Request::HEADER_X_FORWARDED_ALL;
+     protected $headers = Request::HEADER_X_FORWARDED_ALL;
+    // protected $headers = Request::HEADER_X_FORWARDED_ALL;
 }

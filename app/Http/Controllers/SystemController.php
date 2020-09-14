@@ -23,6 +23,7 @@ class SystemController extends Controller
 {
   public function index(Request $request)
   {
+    dd($request);
     $slug = $request->path();
     if(!Session::get('login')){
         return view('pages.login');

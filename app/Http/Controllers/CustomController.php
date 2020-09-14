@@ -74,8 +74,6 @@ class CustomController extends Controller
         $namatable = $widget->maintable;
         $tabledata =  DB::connection('mysql2')->table($widget->maintable)->first();
       }
-            // $widgetgridfield = WidgetGridField::where('idcmswidgetgrid', $widgetgrid->noid)->where('newshow',1)->get();
-      // dd($widgetgridfield);
       return view('lam_modules.'.$namaview.'', compact(
         'noid',
         'menu',
@@ -93,6 +91,7 @@ class CustomController extends Controller
         'namatable',
         'idhomepage',
          'page_description'));
+       
 
 
   }

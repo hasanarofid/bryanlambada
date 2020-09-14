@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
 {
@@ -23,11 +25,12 @@ class HomeController extends Controller
       }
       $menu = Menu::where('noid',$slug)->first();
       $page = Page::where('noid',$menu->linkidpage)->first();
-      dd($page->idtypepage);
+      // dd($page->idtypepage);
       if ((int)$page->idtypepage == 9) {
         //   9. Halaman Custom
-        dd($page->idtypepage);
-        return redirect()->action('App\Http\Controllers\CustomController@index',['slug'=>$slug]);
+        // dd($page->idtypepage);
+          // return Redirect::to('CustomController/index',[$slug]);
+        return redirect()->call('App\Http\Controllers\CustomController@index',[$slug]);
       }else if ((int)$page->idtypepage == 1) {
         // Halaman System
         return redirect()->action('App\Http\Controllers\SystemController@index',['slug'=>$slug]);
