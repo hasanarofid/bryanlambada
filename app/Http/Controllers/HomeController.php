@@ -16,9 +16,26 @@ use Illuminate\Support\Facades\View;
 
 class HomeController extends Controller
 {
+  public function redirectTo()
+{
+    $superAdmin = Auth::user()->type_id = 1;
+    $admin = Auth::user()->type_id = 2;
+    $cashier = Auth::user()->type_id = 3;
+
+    if ($superAdmin) {
+        return '/superAdmin/home';
+    }
+    elseif ($admin) {
+        return '/admin/home';
+    }
+    elseif ($cashier) {
+        return '/cashier/home';
+    }
+}
 
     public function home(Request $request)
     {
+
       $slug = $request->path();
       if(!Session::get('login')){
           return view('pages.login');
@@ -26,8 +43,7 @@ class HomeController extends Controller
       $menu = Menu::where('noid',$slug)->first();
       $page = Page::where('noid',$menu->linkidpage)->first();
       // dd($page->idtypepage);
-      if ((int)$page->idtypepage == 9) {
-        //   9. Halaman Custom
+      if ($page->idtypepage == 9) {
         // dd($page->idtypepage);
           // return Redirect::to('CustomController/index',[$slug]);
         return redirect()->call('App\Http\Controllers\CustomController@index',[$slug]);
@@ -54,7 +70,7 @@ class HomeController extends Controller
         return redirect()->action('App\Http\Controllers\ReportingStandardController@index',['slug'=>$slug]);
       }else if ((int)$page->idtypepage == 8) {
         //  Halaman Reporting Non Standard
-        dd($page->idtypepage);
+        // dd($page->idtypepage);
         return redirect()->action('App\Http\Controllers\ReportingNonStandardController@index',['slug'=>$slug]);
       }else {
         // Other
@@ -64,6 +80,7 @@ class HomeController extends Controller
     }
     public function index()
     {
+      // dd('ok');
           if(!Session::get('login')){
             $idhomepagelink =  request()->path();
             if ($idhomepagelink == '' || $idhomepagelink == '/') {

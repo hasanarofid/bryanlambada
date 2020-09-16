@@ -21,8 +21,26 @@ use Carbon;
 
 class CustomController extends Controller
 {
+  public function redirectTo()
+{
+    $superAdmin = Auth::user()->type_id = 1;
+    $admin = Auth::user()->type_id = 2;
+    $cashier = Auth::user()->type_id = 3;
+
+    if ($superAdmin) {
+        return '/superAdmin/home';
+    }
+    elseif ($admin) {
+        return '/admin/home';
+    }
+    elseif ($cashier) {
+        return '/cashier/home';
+    }
+}
+
   public function index($slug)
   {
+    // dd($slug);
     if(!Session::get('login')){
         return view('pages.login');
     }
@@ -74,6 +92,7 @@ class CustomController extends Controller
         $namatable = $widget->maintable;
         $tabledata =  DB::connection('mysql2')->table($widget->maintable)->first();
       }
+      // dd($namaview);
       return view('lam_modules.'.$namaview.'', compact(
         'noid',
         'menu',
@@ -91,9 +110,6 @@ class CustomController extends Controller
         'namatable',
         'idhomepage',
          'page_description'));
-       
-
-
   }
 
 }

@@ -13,8 +13,14 @@ use Illuminate\Support\Facades\DB;
 class DashboardController extends Controller
 {
 
-    public function index()
+ //  public function __construct()
+ // {
+ //     $this->middleware('systemUser');
+ //   }
+    public function index($slug)
     {
+      dd($slug);
+      // dd('ok');
       if(!Session::get('login')){
         $data = Menu::getAll();
         $data_sidebar = Menu::getSidebar()->toArray();

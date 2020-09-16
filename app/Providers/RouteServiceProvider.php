@@ -21,35 +21,48 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/home';
+    // public const HOME = '/home';
 
     /**
      * Define your route model bindings, pattern filters, etc.
      *
      * @return void
      */
-    public function boot()
+     public function boot()
     {
-        //
-        Route::pattern('slug', '[0-9]+');
-
-            parent::boot();
         parent::boot();
     }
+    // public function boot()
+    // {
+    //     //
+    //     Route::pattern('slug', '[0-9]+');
+    //
+    //         parent::boot();
+    //     parent::boot();
+    // }
 
     /**
      * Define the routes for the application.
      *
      * @return void
      */
+    // public function map()
+    // {
+    //     $this->mapApiRoutes();
+    //
+    //     $this->mapWebRoutes();
+    //
+    //     //
+    // }
     public function map()
     {
         $this->mapApiRoutes();
-
         $this->mapWebRoutes();
-
-        //
+        $this->mapCustomRoutes();
+        // $this->mapSystemRoutes();
     }
+
+
 
     /**
      * Define the "web" routes for the application.
@@ -79,4 +92,13 @@ class RouteServiceProvider extends ServiceProvider
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
     }
+    // $this->mapCustomRoutes();
+    protected function mapCustomRoutes()
+    {
+        Route::prefix('custom')
+            ->namespace($this->namespace)
+            ->group(base_path('routes/custom.php'));
+    }
+
+    // $this->mapSystemRoutes();
 }

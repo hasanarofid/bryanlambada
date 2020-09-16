@@ -16,6 +16,12 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 
+// Route::get('/', [
+//     'uses' => 'HomeController@index',
+//     'middleware' => 'home'
+// ]);
+
+
 Route::get('/', 'HomeController@index');
 Route::get('/login', 'DashboardBaruController@login');
 Route::post('/login/loginPost', 'LoginUserController@loginPost');
@@ -27,7 +33,6 @@ Route::get('/pages/clear-cache', function() {
     return "Cache is cleared";
 });
 
-
 Route::post('/savedata', 'SystemController@savedata');
 Route::get('/getdata', 'SystemController@getdata');
 Route::post('/ambildata', 'SystemController@ambildata');
@@ -35,18 +40,125 @@ Route::post('/ambildata2', 'SystemController@ambildata2');
 Route::post('/ordertable', 'SystemController@ordertable');
 Route::post('/hapusdepartemen', 'SystemController@hapusdepartemen');
 Route::post('/editdepartemen', 'SystemController@editdepartemen');
+// Route::group(['prefix' => '{slug}','middleware'=>
+//   ['middleware']], function () {
+//     Route::get('{slug}', 'DashboardController@index')->name('dashboard');
+//           Route::get('{slug}', 'CustomController@index')->name('custom');
+// });
+Route::group(['middleware'=>['systemUser'] ], function(){
+      Route::get('{slug}', 'DashboardController@index')->name('dashboard');
+      Route::get('{slug}', 'CustomController@index')->name('custom');
+      //ETC
+    });
+
+// Route::get('/', [
+//     'uses' => 'HomeController@index',
+//     'middleware' => 'systemUser'
+// ]);
+// Route::get('/{slug}', [
+//     // 'uses' => 'CustomController@index',
+//     'middleware' => 'systemUser'
+// ]);
+
+// Route::group(['namespace' => '/'], function($slug)
+// {
+//   dd($slug);
+//   $menu = App\Menu::where('noid',$slug)->first();
+//    $page = App\Page::where('noid',$menu->linkidpage)->first();
+//     Route::get('{admin/news}', [
+//         'uses' => 'NewsController@index'
+//     ]);
+//
+//     Route::get('admin/users', [
+//         'uses' => 'UserController@index'
+//     ]);
+//
+// });
+
+
+// Route::get('/{slug}', 'ThoughtRecordController@edit')->middleware('can:isOwner,thoughtRecord');
+// Route::get('/{slug}', function ($slug) {
+//     //
+// })->middleware('systemUser');
 // Route::get('/{slug}', array('as' => 'home.home', 'uses' => 'HomeController@home'));
-Route::get('/{slug}', 'HomeController@home');
-// Route::get('{slug}', function($slug) {
-//    // return 'User '.$slug;
-//       if(!Session::get('login')){
-//           return view('pages.login');
-//       }
+// Route::get('/{slug?}', ['as' => 'home', 'uses' => 'HomeController@home']);
+// Route::get('/{slug?}', function ($slug) {
+//   $menu = App\Menu::where('noid',$slug)->first();
+//   $page = App\Page::where('noid',$menu->linkidpage)->first();
+//   dd('a');
+//   return $slug;
+// });
+// Route::get('/{slug?}', function ($slug) {
+//   $menu = App\Menu::where('noid',$slug)->first();
+//   $page = App\Page::where('noid',$menu->linkidpage)->first();
+//     dd('b');
+//   return $slug;
+// });
+
+// Route::get('{slug}', function ($slug) {
+//   //
+//   // dd($slug);
+//   $menu = App\Menu::where('noid',$slug)->first();
+//      $page = App\Page::where('noid',$menu->linkidpage)->first();
+//      // dd($page->idtypepage);
+//      if ($page->idtypepage == 9)
+//      {
+//        $url = route('CustomController@index',['slug' => $slug])->name('custom');
+//        return redirect()->route('custom');
+//        // return redirect()->action('CustomController@index', ['slug' => $slug]);
+//        // Route::get('/'.$slug.' ', 'CustomController@index')->name('custom');
+//        //
+//        // return redirect(route('custom'));
+//
+//      }
+// })->where('slug', '[0-9]+');
+
+// Route::group([], function()
+// {
+//   Route::get('/{slug}', function ($slug) {
 //     $menu = App\Menu::where('noid',$slug)->first();
 //     $page = App\Page::where('noid',$menu->linkidpage)->first();
+//     // dd($page->idtypepage);
+//     if ($page->idtypepage == 9)
+//     {
+//       return redirect()->action('CustomController@index', ['slug' => $slug]);
+//       // Route::get('/'.$slug.' ', 'CustomController@index')->name('custom');
+//       //
+//       // return redirect(route('custom'));
+//
+//     }
+//
+//   });
+//
+//
+// });
+
+
+
+// $pages =
+// Cache::remember('pages', 5, function() {
+//     return DB::table('cmspage')
+//             ->where('idtypepage', $slug)
+//
+// });
+
+
+
+// Route::get('/{slug?}', function ($slug) {
+//     $class = false;
+//     $action = false;
+//     $menu = App\Menu::where('noid',$slug)->first();
+//     $page = App\Page::where('noid',$menu->linkidpage)->first();
+//     $route = app(\Illuminate\Routing\Route::class);
+//     $request = app(\Illuminate\Http\Request::class);
+//     $router = app(\Illuminate\Routing\Router::class);
+//     $container = app(\Illuminate\Container\Container::class);
 //     if ($page->idtypepage == 9) {
 //       //custom
-//       return redirect(route('custom'));
+//       $class = CustomController::class;
+//           $action = 'index/'.$slug;
+//               return (new App\Http\Controllers\CustomController($router, $container))->dispatch($route, $request, $class, $action);
+//       // return redirect(route('custom'));
 //     }else if ($page->idtypepage == 1) {
 //       //Halaman System
 //       return redirect(route('system'));
@@ -68,8 +180,64 @@ Route::get('/{slug}', 'HomeController@home');
 //     }else if ($page->idtypepage == 8) {
 //             return redirect(route('ReportingNonStandardController'));
 //     }
+//
+//     // $user = UserModel::where('slug', $slug)->first();
+//     // if ($user) {
+//     //     $class = UserController::class;
+//     //     $action = 'userProfile';
+//     // }
+//     //
+//     // if (!$class) {
+//     //     $article= ArticleModel::where('slug', $slug)->first();
+//     //     if ($article) {
+//     //         $class = ArticleController::class;
+//     //         $action = 'index';
+//     //     }
+//     // }
+//     //
+//     // if ($class) {
+//     //
+//     //     return (new ControllerDispatcher($router, $container))->dispatch($route, $request, $class, $action);
+//     // }
+//
+//     // Some fallback to 404
+//     throw new NotFoundHttpException;
+// });
+// Route::get('/{slug}', 'HomeController@home');
+// Route::get('{slug}', function($slug) {
+//    // return 'User '.$slug;
+//       if(!Session::get('login')){
+//           return view('pages.login');
+//       }
+//     $menu = App\Menu::where('noid',$slug)->first();
+//     $page = App\Page::where('noid',$menu->linkidpage)->first();
+    // if ($page->idtypepage == 9) {
+    //   //custom
+    //   return redirect(route('custom'));
+    // }else if ($page->idtypepage == 1) {
+    //   //Halaman System
+    //   return redirect(route('system'));
+    // }else if ($page->idtypepage == 2) {
+    //   //Dashboard
+    //   return redirect(route('dashboard'));
+    // }else if ($page->idtypepage == 3) {
+    //   // Halaman Data Master (Tabel Biasa)
+    //   return redirect(route('MasterTabelController'));
+    // }else if ($page->idtypepage == 4) {
+    //   // Halaman Data Master (Tabel Biasa)
+    //   return redirect(route('MasterTreelistController'));
+    // }else if ($page->idtypepage == 5) {
+    //   return redirect(route('TransaksiMasterDetailController'));
+    // }else if ($page->idtypepage == 6) {
+    //     return redirect(route('TransaksiMasterDetail6Controller'));
+    // }else if ($page->idtypepage == 7) {
+    //       return redirect(route('ReportingStandardController'));
+    // }else if ($page->idtypepage == 8) {
+    //         return redirect(route('ReportingNonStandardController'));
+    // }
 //     return abort(404);
 // });
+
 // Route::get('/{slug}', 'CustomController@index')->name('custom');
 // Route::get('/{slug}', 'SystemController@index')->name('system');
 // Route::patch('/{slug}',[
